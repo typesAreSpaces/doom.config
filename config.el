@@ -102,6 +102,13 @@
       "u" #'winner-undo
       "r" #'winner-redo)
 
+(map! :leader
+      :prefix "t"
+      "n" #'tab-bar-new-tab
+      "c" #'tab-bar-close-tab
+      "d" #'tab-bar-duplicate-tab
+      "r" #'tab-bar-renma-tab)
+
 (global-set-key (kbd "C-:") 'avy-goto-char)
 (global-set-key (kbd "C-c C-b") 'consult-buffer)
 (global-set-key (kbd "C-s") 'consult-line)
