@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Proof Environment
+# key: ;proof
+# condition: 'auto
+# --
+\begin{${1:$$(yas-choose-value '("proof" "prooftree"))}}${2:[Proof of ${3:ref?}]}
+  $0
+\end{$1}

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: map
+# key: ;map
+# condition: 'auto
+# --
+${1:$$(when
+	(and yas-modified-p yas-moving-away-p)
+	(substring
+		(mapconcat
+			(lambda (x) (concat yas-text "\{" x "\} "))
+			(split-string (car kill-ring) " ") "") 0 -1))}

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: new test cases
+# key: ;exercise
+# condition: 'auto
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+("${1:Exercise name}" .
+  (
+    $2
+  )
+)
+$0

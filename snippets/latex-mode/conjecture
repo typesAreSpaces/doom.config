@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: conjecture
+# key: ;conjecture
+# condition: 'auto
+# --
+\begin{conjecture}
+  \th\label{`(reftex-label nil 'dont-insert)`}
+  $0
+\end{conjecture}

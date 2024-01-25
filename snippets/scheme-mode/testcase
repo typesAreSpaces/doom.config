@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: new test case
+# key: ;test
+# condition: 'auto
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+(
+  ${1:test}
+  ${2:handler}
+  ${3:points}
+)

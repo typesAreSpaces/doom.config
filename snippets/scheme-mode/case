@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: (case ... [... ...]...)
+# key: ;case
+# condition: 'auto
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+(case ${1:expression}
+  (${2:datum}
+  $0))

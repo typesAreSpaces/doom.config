@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: (cond [... ...]...)
+# key: ;cond
+# condition: 'auto
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+(cond
+  (${1:predicate} ${2:predicate})
+  $0)

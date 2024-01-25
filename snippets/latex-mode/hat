@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: hat
+# key: ;hat
+# condition: 'auto
+# --
+\\hat{$1}$0

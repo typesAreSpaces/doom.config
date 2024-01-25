@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: (lambda (...) ...)
+# key: ;lambda
+# condition: 'auto
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+(lambda ${1:(${2:arguments})}
+  $0)

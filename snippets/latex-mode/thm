@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Theorem Environment
+# key: ;thm
+# condition: 'auto
+# --
+\begin{theorem}${1:[${2:cite?}]}
+  \th\label{`(reftex-label nil 'dont-insert)`}
+  $0
+\end{theorem}

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: New command
+# key: ;ncmd
+# condition: 'auto
+# --
+\newcommand{\\${1:name}}[${2:numargs}]{${3:arg#i}}$0

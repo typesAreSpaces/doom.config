@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: Email template to email regrade request for CS 561
+# key: ;regrade
+# condition: 'auto
+# --
+Hello $1,
+
+I hope you're doing well. I'm available today after $2, so we can
+discuss about $3 from $2. to $4
+Would that sound good to you?
+
+This is a zoom link we can use for the meeting:
+
+https://unm.zoom.us/j/91380993744
+
+Meeting ID: 913 8099 3744
+
+If you have technical issues with the above please let me know. You're
+also welcome to come to my office at the Farris building third floor
+3155.
+$0 

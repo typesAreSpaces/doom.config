@@ -22,8 +22,8 @@
 ;(setq doom-font (font-spec :family "Input Mono" :size 18 :weight 'semi-light)
 ;      doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
-(setq doom-font (font-spec :size 18)
-      doom-big-font (font-spec :size 24))
+(setq doom-font (font-spec :size 16)
+      doom-big-font (font-spec :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -36,7 +36,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -55,7 +55,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-; Path definitions
+;; Path definitions
 
 (setq phd-thesis-dir "~/Documents/GithubProjects/phd-thesis")
 (setq phd-thesis-write-ups-dir
@@ -64,8 +64,12 @@
 (setq maxdiff-write-ups-dir
       (concat phd-thesis-dir
               "/Documents/Side-Projects/MaxDiff/Documents/notes"))
+(setq scc-dir
+      (concat phd-thesis-dir
+              "/Documents/Side-Projects/kapur-nsf-proposal/2022"))
+(setq scc-reports-dir (concat scc-dir "/Reports"))
 
-; Custom keybindings
+;; Custom keybindings
 
 (defun haha ()
   (interactive)
@@ -73,9 +77,45 @@
 
 (map! :leader
       :desc "Something"
-      "a" #'haha)
+      "z" #'haha)
 
-; Package configuration
+(map! :leader
+      :prefix "s"
+      "c" #'avy-goto-char
+      "w" #'avy-goto-word)
+
+(map! :leader
+      :prefix "r"
+      "s" #'bookmark-set
+      "j" #'bookmark-jump
+      "d" #'bookmark-delete)
+
+(map! :leader
+      :prefix "b"
+      "c" #'evilnc-comment-or-uncomment-lines
+      "f" #'fill-paragraph
+      "i" #'((lambda () (interactive)
+               (indent-region (point-min) (point-max)))))
+
+(map! :leader
+      :prefix "w"
+      "u" #'winner-undo
+      "r" #'winner-redo)
+
+(global-set-key (kbd "C-:") 'avy-goto-char)
+(global-set-key (kbd "C-c C-b") 'consult-buffer)
+(global-set-key (kbd "C-s") 'consult-line)
+(global-set-key (kbd "C-c C-f") 'consult-find)
+(global-set-key (kbd "C-c C-g") 'consult-grep)
+
+(map! :after evil
+      :map evil-normal-state-map
+      "C-t" 'tab-bar-new-tab)
+(map! :after evil
+      :map evil-normal-state-map
+      "C-<tab>" 'tab-bar-switch-to-next-tab)
+
+;; Package configuration
 
 (use-package! zoom
   :config
@@ -87,39 +127,44 @@
 
 (use-package! yasnippet
   :config
-  (setq yas-snippet-dirs `(,(expand-file-name "snippets" user-emacs-directory)))
+  (setq yas-snippet-dirs `(,(expand-file-name "snippets" doom-user-dir)))
   (setq yas-key-syntaxes '(yas-longest-key-from-whitespace "w_.()" "w_." "w_" "w"))
   (define-key yas-minor-mode-map (kbd "C-g") 'evil-normal-state)
   (define-key yas-keymap (kbd "C-g") 'evil-normal-state)
   (yas-global-mode 1))
 
+(use-package! yasnippet-snippets)
+
+(load! (expand-file-name "snippets/yasnippet-scripts.el" doom-user-dir))
+
+  (defun restart-yasnippet ()
+    (interactive)
+    (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets))
+
 (use-package! citar
   :custom
-  (citar-bibliography `(,(concat maxdiff-write-ups-dir "/references.bib")
+  (citar-bibliography `(,(concat scc-reports-dir "/references.bib")
+                        ,(concat maxdiff-write-ups-dir "/references.bib")
                         ,(concat phd-thesis-write-ups-dir "/references.bib"))))
 
 (map! "C-c b" #'citar-insert-citation)
 
-(use-package! jinx
-  :config
-  (vertico-multiform-mode 1))
-
 (defun efs/lsp-mode-setup ()
-    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-    (lsp-headerline-breadcrumb-mode))
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
 
 (use-package! lsp-mode
-      :commands (lsp lsp-deferred)
-      ;:hook (lsp-mode . efs/lsp-mode-setup)
-      :init
-      (setq lsp-keymap-prefix "C-l")
-      :config
-      (setq lsp-completion-provider :none)
-      (defun corfu-lsp-setup ()
-        (setq-local completion-styles '(orderless)
-                    completion-category-defaults nil))
-      (add-hook 'lsp-mode-hook #'corfu-lsp-setup)
-      (lsp-enable-which-key-integration t))
+  :commands (lsp lsp-deferred)
+  ;;:hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-l")
+  :config
+  (setq lsp-completion-provider :none)
+  (defun corfu-lsp-setup ()
+    (setq-local completion-styles '(orderless)
+                completion-category-defaults nil))
+  (add-hook 'lsp-mode-hook #'corfu-lsp-setup)
+  (lsp-enable-which-key-integration t))
 
 (add-hook 'TeX-mode-hook 'lsp)
 (add-hook 'LaTeX-mode-hook 'lsp)
@@ -165,3 +210,11 @@
       (kill-buffer (current-buffer))))
   (insert (decode-coding-string bibtex-entry 'utf-8))
   (bibtex-fill-entry))
+
+(use-package! atomic-chrome
+  :config
+  (atomic-chrome-start-server)
+  (setq atomic-chrome-buffer-open-style 'full)
+  (setq atomic-chrome-url-major-mode-alist
+        '(("github\\.com" . poly-markdown+r-mode)
+          ("overleaf\\.com" . latex-mode))))
