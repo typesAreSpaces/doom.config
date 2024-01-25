@@ -64,10 +64,6 @@
 (setq maxdiff-write-ups-dir
       (concat phd-thesis-dir
               "/Documents/Side-Projects/MaxDiff/Documents/notes"))
-(setq scc-dir
-      (concat phd-thesis-dir
-              "/Documents/Side-Projects/kapur-nsf-proposal/2022"))
-(setq scc-reports-dir (concat scc-dir "/Reports"))
 
 ; Custom keybindings
 
@@ -99,8 +95,7 @@
 
 (use-package! citar
   :custom
-  (citar-bibliography `(,(concat scc-reports-dir "/references.bib")
-                        ,(concat maxdiff-write-ups-dir "/references.bib")
+  (citar-bibliography `(,(concat maxdiff-write-ups-dir "/references.bib")
                         ,(concat phd-thesis-write-ups-dir "/references.bib"))))
 
 (map! "C-c b" #'citar-insert-citation)
