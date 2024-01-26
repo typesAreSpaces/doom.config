@@ -51,11 +51,13 @@
         ("\\.x?html?\\'" . default)
         ("\\.pdf\\'" . "sioyek %s")
         ("\\.nb?\\'" . "Mathematica %s")))
-(setq org-todo-keywords
+(after! org
+  (setq org-todo-keywords
       '((sequence "EXTERNAL" "|")
         (sequence "GOAL" "IDEA" "OBSERVATION" "|" "OK")
         (sequence "TODAY" "TODO" "LATER" "|" "MOVED" "COMPLETED(c)" "CANC(k@)")
-        (sequence "EMAIL" "|")))
+        (sequence "EMAIL" "|"))))
+
 ;(setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
 (defun org-sort-buffer ()
     "Sort all entries in the current buffer, recursively."
@@ -108,6 +110,12 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; Basic UI
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+(setq make-backup-files nil)
 
 ;; Path definitions
 
