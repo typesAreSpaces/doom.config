@@ -19,8 +19,8 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-;(setq doom-font (font-spec :family "Input Mono" :size 18 :weight 'semi-light)
-;      doom-variable-pitch-font (font-spec :family "sans" :size 19))
+;;(setq doom-font (font-spec :family "Input Mono" :size 18 :weight 'semi-light)
+;;      doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
 (setq doom-font (font-spec :size 16)
       doom-big-font (font-spec :size 18))
@@ -58,6 +58,9 @@
 ;; Path definitions
 
 (setq phd-thesis-dir "~/Documents/GithubProjects/phd-thesis")
+(setq phd-thesis-org-files-dir
+    (concat phd-thesis-dir
+            "/Documents/Org-Files"))
 (setq phd-thesis-write-ups-dir
       (concat phd-thesis-dir
               "/Documents/Write-Ups"))
@@ -144,9 +147,9 @@
 
 (load! (expand-file-name "snippets/yasnippet-scripts.el" doom-user-dir))
 
-  (defun restart-yasnippet ()
-    (interactive)
-    (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets))
+(defun restart-yasnippet ()
+  (interactive)
+  (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets))
 
 (use-package! citar
   :custom
@@ -175,6 +178,11 @@
 
 (add-hook 'TeX-mode-hook 'lsp)
 (add-hook 'LaTeX-mode-hook 'lsp)
+(add-hook 'TeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq-default fill-column 80)
+(add-hook 'TeX-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'LaTeX-mode-hook #'display-fill-column-indicator-mode)
 
 (use-package! lsp-latex
   :config
@@ -183,14 +191,28 @@
         '("-pvc" "-pdf" "-interaction=nonstopmode" "-synctex=1" "-cd" "%f"))
   (setq lsp-latex-forward-search-after t)
   (setq lsp-latex-build-on-save t)
-  (setq lsp-latex-forward-search-executable "/opt/homebrew/bin/sioyek")
-  (setq lsp-latex-forward-search-args
-        '(
-          "--forward-search-file"
-          "%f"
-          "--forward-search-line"
-          "%l"
-          "%p")))
+  ;; Configuration for sioyek
+  ;; (setq lsp-latex-forward-search-executable "/opt/homebrew/bin/sioyek")
+  ;; (setq lsp-latex-forward-search-args
+  ;;       '(
+  ;;         "--forward-search-file"
+  ;;         "%f"
+  ;;         "--forward-search-line"
+  ;;         "%l"
+  ;;         "%p"))
+  ;; Configuration for Skim
+  (setq lsp-latex-forward-search-executable
+        "/Applications/Skim.app/Contents/SharedSupport/displayline")
+  (setq lsp-latex-forward-search-args '("%l" "%p" "%f"))
+  )
+
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(setq reftex-plug-into-AUCTeX t)
+(setq reftex-insert-label-flags (list t nil))
+(setq reftex-ref-macro-prompt nil)
+(setq font-latex-fontify-script nil)
 
 (map! :map LaTeX-mode-map
       :prefix "C-l w"
@@ -225,3 +247,21 @@
   (setq atomic-chrome-url-major-mode-alist
         '(("github\\.com" . poly-markdown+r-mode)
           ("overleaf\\.com" . latex-mode))))
+
+(defhydra hydra-jump-files (:exit t)
+  "jump to files"
+  ("a" (find-file
+        (expand-file-name (concat phd-thesis-org-files-dir "/main.org")))
+   "Agenda")
+  ("e" (find-file
+        (expand-file-name "config.el" doom-user-dir))
+   "Doom Emacs config")
+  ("rp" (find-file
+         (expand-file-name (concat phd-thesis-write-ups-dir "/references.bib")))
+   "Bibtex references - PhD thesis")
+  ("rs" (find-file
+         (expand-file-name (concat scc-reports-dir "/references.bib")))
+   "Bibtex references - SCC project"))
+
+(map! :leader
+      "C-f" #'hydra-jump-files/body)
