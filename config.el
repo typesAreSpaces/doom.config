@@ -32,11 +32,65 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+(setq org-ellipsis "⇓")
+(setq org-hierarchical-todo-statistics nil)
 (setq org-directory "~/org/")
+(setq org-agenda-files
+      '(
+        "~/Documents/GithubProjects/phd-thesis/Documents/Misc/20231115200616-qm_seminar.org"
+        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/research_tasks.org"
+        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/school_tasks.org"
+        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/graduation_logistics.org"
+        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/dissertation_tasks.org"
+        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/main.org"
+        ))
+(setq org-file-apps
+      '((auto-mode . emacs)
+        (directory . emacs)
+        ("\\.mm\\'" . default)
+        ("\\.x?html?\\'" . default)
+        ("\\.pdf\\'" . "sioyek %s")
+        ("\\.nb?\\'" . "Mathematica %s")))
+(setq org-todo-keywords
+      '((sequence "EXTERNAL" "|")
+        (sequence "GOAL" "IDEA" "OBSERVATION" "|" "OK")
+        (sequence "TODAY" "TODO" "LATER" "|" "MOVED" "COMPLETED(c)" "CANC(k@)")
+        (sequence "EMAIL" "|")))
+;(setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
+(defun org-sort-buffer ()
+    "Sort all entries in the current buffer, recursively."
+    (interactive)
+    (mark-whole-buffer)
+    (org-sort-entries nil ?o)
+    (org-map-entries (lambda ()
+                       (condition-case x
+                           (org-sort-entries nil ?o)
+                         (user-error)))))
+
+(map! :map org-mode-map 
+      "C-c d" #'(lambda () (interactive) (org-todo "MOVED")))
+(map! :map org-mode-map 
+      "C-c c" #'(lambda () (interactive) (org-todo "COMPLETED")))
+(map! :map org-mode-map 
+      "C-c t" #'(lambda () (interactive) (org-todo "TODO")))
+(map! :map org-mode-map 
+      "C-c k" #'(lambda () (interactive) (org-todo "CANC")))
+(map! :map org-mode-map 
+      "C-c i" #'(lambda () (interactive) (org-todo "IDEA")))
+(map! :map org-mode-map 
+      "C-c o" #'(lambda () (interactive) (org-todo "OK")))
+(map! :map org-mode-map 
+      "C-c C-<return>" #'org-insert-heading-respect-content)
+(map! :map org-mode-map 
+      "C-c C-<SPC>" #'org-insert-subheading)
+(map! :map org-mode-map 
+      "C-c RET" #'org-meta-return)
+(map! :map org-mode-map 
+      "C-c s" #'(lambda () (interactive) (org-sort-buffer)))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'visual)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -59,8 +113,8 @@
 
 (setq phd-thesis-dir "~/Documents/GithubProjects/phd-thesis")
 (setq phd-thesis-org-files-dir
-    (concat phd-thesis-dir
-            "/Documents/Org-Files"))
+      (concat phd-thesis-dir
+              "/Documents/Org-Files"))
 (setq phd-thesis-write-ups-dir
       (concat phd-thesis-dir
               "/Documents/Write-Ups"))
@@ -125,6 +179,9 @@
       :map evil-normal-state-map
       "C-<tab>" 'tab-bar-switch-to-next-tab)
 
+(evil-global-set-key 'motion "j" 'evil-next-visual-line)
+(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
 ;; Package configuration
 
 (use-package! zoom
@@ -180,6 +237,8 @@
 (add-hook 'LaTeX-mode-hook 'lsp)
 (add-hook 'TeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'TeX-mode-hook #'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook #'auto-fill-mode)
 (setq-default fill-column 80)
 (add-hook 'TeX-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'LaTeX-mode-hook #'display-fill-column-indicator-mode)
@@ -221,6 +280,9 @@
 (map! :leader
       :map LaTeX-mode-map
       "lf" #'lsp-latex-forward-search)
+(map! :leader
+      :map LaTeX-mode-map
+      "lF" #'(lambda () (interactive) (LaTeX-fill-buffer nil)))
 
 (defun get-bibtex-from-doi (doi)
   "Get a BibTeX entry from the DOI"
