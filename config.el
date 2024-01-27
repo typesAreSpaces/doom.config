@@ -53,21 +53,20 @@
         ("\\.nb?\\'" . "Mathematica %s")))
 (after! org
   (setq org-todo-keywords
-      '((sequence "EXTERNAL" "|")
-        (sequence "GOAL" "IDEA" "OBSERVATION" "|" "OK")
-        (sequence "TODAY" "TODO" "LATER" "|" "MOVED" "COMPLETED(c)" "CANC(k@)")
-        (sequence "EMAIL" "|"))))
-
-;(setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
+        '((sequence "EXTERNAL" "|")
+          (sequence "GOAL" "IDEA" "OBSERVATION" "|" "OK")
+          (sequence "TODAY" "TODO" "LATER" "|" "MOVED" "COMPLETED(c)" "CANC(k@)")
+          (sequence "EMAIL" "|"))))
+                                        ;(setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
 (defun org-sort-buffer ()
-    "Sort all entries in the current buffer, recursively."
-    (interactive)
-    (mark-whole-buffer)
-    (org-sort-entries nil ?o)
-    (org-map-entries (lambda ()
-                       (condition-case x
-                           (org-sort-entries nil ?o)
-                         (user-error)))))
+  "Sort all entries in the current buffer, recursively."
+  (interactive)
+  (mark-whole-buffer)
+  (org-sort-entries nil ?o)
+  (org-map-entries (lambda ()
+                     (condition-case x
+                         (org-sort-entries nil ?o)
+                       (user-error)))))
 
 (map! :map org-mode-map 
       "C-c d" #'(lambda () (interactive) (org-todo "MOVED")))
