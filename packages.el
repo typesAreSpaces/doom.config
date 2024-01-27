@@ -28,6 +28,8 @@
   :recipe (:host github :repo "minad/jinx"))
 (package! lsp-latex
   :recipe (:host github :repo "ROCKTAKEY/lsp-latex"))
+(package! consult-reftex
+  :recipe (:host github :repo "karthink/consult-reftex"))
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify

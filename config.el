@@ -64,7 +64,7 @@
   (mark-whole-buffer)
   (org-sort-entries nil ?o)
   (org-map-entries (lambda ()
-                     (condition-case x
+                     (condition-case nil
                          (org-sort-entries nil ?o)
                        (user-error)))))
 
