@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: env
-# key: ;env
-# condition: 'auto
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
-#!/usr/bin/env ${1:$$(yas-choose-value '("bash" "sh"))}
-$0

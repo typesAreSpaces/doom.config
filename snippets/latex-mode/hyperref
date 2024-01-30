@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: hyper ref
-# key: ;hyperref
-# condition: 'auto
-# --
-\\href{$1}{$2} $0

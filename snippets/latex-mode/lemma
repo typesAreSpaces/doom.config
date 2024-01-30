@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Lemma Environment
-# key: ;lemma
-# condition: 'auto
-# --
-\begin{lemma}${1:[${2:cite?}]}
-  \th\label{`(reftex-label nil 'dont-insert)`}
-  $0
-\end{lemma}

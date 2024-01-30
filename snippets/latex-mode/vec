@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: vector
-# key: ;vec
-# condition: 'auto
-# --
-\\vec{$1}$0

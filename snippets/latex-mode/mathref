@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: Math Reference
-# key: ;mathref
-# condition: 'auto
-# --
-\\th\\ref{$1}$0
