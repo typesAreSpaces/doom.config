@@ -115,6 +115,11 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (setq make-backup-files nil)
+(setq ring-bell-function 'ignore)
+(setq confirm-kill-emacs #'y-or-n-p)
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(setq-default line-spacing 2)
 
 ;; Path definitions
 
@@ -179,12 +184,27 @@
 (global-set-key (kbd "C-c C-f") 'consult-find)
 (global-set-key (kbd "C-c C-g") 'consult-grep)
 
+(defun consult-grep-current-dir ()
+  "Call `consult-grep' for the current buffer (a single file)."
+  (interactive)
+  (let ((consult-project-function (lambda (_) "./")))
+    (consult-grep)))
+
+(defun consult-find-current-dir ()
+  "Call `consult-find' for the current buffer (a single file)."
+  (interactive)
+  (let ((consult-project-function (lambda (_) "./")))
+    (consult-find)))
+
 (map! :after evil
       :map evil-normal-state-map
       "C-t" 'tab-bar-new-tab)
 (map! :after evil
       :map evil-normal-state-map
       "C-<tab>" 'tab-bar-switch-to-next-tab)
+(map! :after evil
+      :map evil-insert-state-map
+      "C-g" 'evil-normal-post-command)
 
 (evil-global-set-key 'motion "j" 'evil-next-visual-line)
 (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
@@ -222,6 +242,46 @@
                         ,(concat phd-thesis-write-ups-dir "/references.bib"))))
 
 (map! "C-c b" #'citar-insert-citation)
+
+(use-package company
+  :diminish company-mode
+  :custom
+  (company-minimum-prefix-length 3)
+  (company-tooltip-align-annotations t)
+  (company-require-match 'never)
+  ;; Don't use company in the following modes
+  (company-global-modes '(not shell-mode eaf-mode))
+  ;; Trigger completion immediately.
+  (company-idle-delay 0.1)
+  ;; Number the candidates (use M-1, M-2 etc to select completions).
+  (company-show-numbers t)
+  :config
+  ;;(unless clangd-p (delete 'company-clang company-backends))
+  (global-company-mode 1)
+  (defun smarter-tab-to-complete ()
+    (interactive)
+    (when yas-minor-mode
+      (let ((old-point (point))
+            (old-tick (buffer-chars-modified-tick))
+            (func-list
+             (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field)
+               '(yas-expand yas-next-field))))
+        (catch 'func-suceed
+          (dolist (func func-list)
+            (ignore-errors (call-interactively func))
+            (unless (and (eq old-point (point))
+                         (eq old-tick (buffer-chars-modified-tick)))
+              (throw 'func-suceed t)))
+          (company-complete-common))))))
+
+(add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'LaTeX-mode-hook 'company-mode)
+(add-hook 'latex-mode-hook 'company-mode)
+
+(map! :map company-active-map
+      "[tab]" #'smarter-tab-to-complete)
+(map! :map company-active-map
+      "TAB" #'smarter-tab-to-complete)
 
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -388,3 +448,41 @@
                                         ; #'cape-elisp-symbol)
                                         ; (add-to-list 'completion-at-point-functions #'cape-line))
   )
+
+(use-package! org-bullets
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(defun efs/org-font-setup ()
+                                        ; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+                                        ; Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :weight 'regular :height (cdr face)))
+
+  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+  (when (not (version< emacs-version "26.3"))
+    (set-face-attribute 'line-number nil :inherit 'fixed-pitch))
+  (when (not (version< emacs-version "26.3"))
+    (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)))
+
+(efs/org-font-setup)
