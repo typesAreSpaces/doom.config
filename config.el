@@ -240,6 +240,8 @@
   (add-hook 'lsp-mode-hook #'corfu-lsp-setup)
   (lsp-enable-which-key-integration t))
 
+(add-hook 'TeX-mode-hook 'outline-minor-mode)
+(add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 (add-hook 'TeX-mode-hook 'lsp)
 (add-hook 'LaTeX-mode-hook 'lsp)
 (add-hook 'TeX-mode-hook 'turn-on-reftex)
@@ -290,6 +292,11 @@
 (map! :leader
       :map LaTeX-mode-map
       "lF" #'(lambda () (interactive) (LaTeX-fill-buffer nil)))
+(map! :leader
+      :map outline-minor-mode-map
+      "<tab>" #'outline-toggle-children)
+(map! :map outline-minor-mode-map
+      "<S-tab>" #'outline-cycle)
 
 (defun get-bibtex-from-doi (doi)
   "Get a BibTeX entry from the DOI"
