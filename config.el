@@ -281,6 +281,7 @@
 (setq reftex-insert-label-flags (list t nil))
 (setq reftex-ref-macro-prompt nil)
 (setq font-latex-fontify-script nil)
+(setq TeX-electric-sub-and-superscript nil)
 
 (map! :map LaTeX-mode-map
       :prefix "C-l w"
