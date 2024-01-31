@@ -486,3 +486,27 @@
     (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)))
 
 (efs/org-font-setup)
+
+(use-package! embark
+      :bind
+      ;;(
+       ;;("C-c C-." . embark-act)         ; pick some comfortable binding
+       ;;("C-;" . embark-dwim)        ; good alternative: M-.
+       ;;("C-h B" . embark-bindings) ; alternative for `describe-bindings'
+       ;;:map embark-file-map
+       ;;("t" . find-file-other-tab))
+      :init
+                                          ; Optionally replace the key help with a completing-read interface
+      (setq prefix-help-command #'embark-prefix-help-command)
+      :config
+      ;;(add-to-list 'marginalia-prompt-categories '("tab by name" . tab))
+                                          ; Hide the mode line of the Embark live/completions buffers
+      (require 'embark)
+      (add-to-list 'display-buffer-alist
+                   '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                     nil
+                     (window-parameters (mode-line-format . none))))
+      (defvar-keymap embark-file-map
+        :doc "Example keymap with a few file actions"
+        :parent embark-general-map
+        "t" #'find-file-other-tab))
