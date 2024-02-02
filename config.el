@@ -497,16 +497,12 @@
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
-                 (window-parameters (mode-line-format . none))))
-  (defvar-keymap embark-file-map
-    :doc "Example keymap with a few file actions"
-    :parent embark-general-map
-    "t" #'find-file-other-tab))
+                 (window-parameters (mode-line-format . none)))))
 
 (global-set-key (kbd "C-c C-.") 'embark-act)
 
-(after! embark
-  (defvar-keymap embark-file-map
-    :doc "Example keymap with a few file actions"
-    :parent embark-general-map
-    "t" #'find-file-other-tab))
+(keymap-set
+ embark-file-map
+ "t" #'(lambda ()
+         (interactive)
+         (call-interactively #'find-file-other-tab)))
