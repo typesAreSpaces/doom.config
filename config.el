@@ -204,7 +204,7 @@
       "C-<tab>" 'tab-bar-switch-to-next-tab)
 (map! :after evil
       :map evil-insert-state-map
-      "C-g" 'evil-normal-post-command)
+      "C-g" 'evil-normal-state)
 
 (evil-global-set-key 'motion "j" 'evil-next-visual-line)
 (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
