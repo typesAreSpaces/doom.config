@@ -68,25 +68,25 @@
                          (org-sort-entries nil ?o)
                        (user-error)))))
 
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c d" #'(lambda () (interactive) (org-todo "MOVED")))
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c c" #'(lambda () (interactive) (org-todo "COMPLETED")))
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c t" #'(lambda () (interactive) (org-todo "TODO")))
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c k" #'(lambda () (interactive) (org-todo "CANC")))
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c i" #'(lambda () (interactive) (org-todo "IDEA")))
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c o" #'(lambda () (interactive) (org-todo "OK")))
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c C-<return>" #'org-insert-heading-respect-content)
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c C-<SPC>" #'org-insert-subheading)
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c RET" #'org-meta-return)
-(map! :map org-mode-map 
+(map! :map org-mode-map
       "C-c s" #'(lambda () (interactive) (org-sort-buffer)))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
