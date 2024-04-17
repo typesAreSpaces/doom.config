@@ -506,3 +506,60 @@
  "t" #'(lambda ()
          (interactive)
          (call-interactively #'find-file-other-tab)))
+
+(use-package! org-roam
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
+      :unnarrowed t)
+     ("l" "lecture" plain
+      (file "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/Templates/lecture.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %U\n")
+      :unnarrowed t)
+     ("m" "meeting" plain
+      (file "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/Templates/meeting.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %U\n")
+      :unnarrowed t)))
+  :bind (("C-x n f" . org-roam-node-find)
+         ("C-x n i" . org-roam-node-insert)
+         :map org-mode-map
+         ("C-M-i" . completion-at-point)
+         ("C-<return>" . vertico-exit-input))
+  :config
+  (org-roam-setup))
+
+(use-package! ox-hugo
+  :ensure t
+  :after ox)
+
+(setq website-dir "~/Documents/GithubProjects/website")
+(setq website-posts (concat website-dir "/content-org/all-posts.org"))
+
+(with-eval-after-load 'org-capture
+  (defun org-hugo-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Hugo post.
+        See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: "))
+           (curdate (format-time-string "%Y-%m-%d"))
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ,(concat ":EXPORT_DATE: " curdate)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
+
+  (add-to-list 'org-capture-templates
+               '("h" "Hugo post" entry
+                 (file+olp website-posts "Posts")
+                 (function org-hugo-new-subtree-post-capture-template)
+                 :prepend t)))

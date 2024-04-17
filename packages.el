@@ -18,9 +18,11 @@
 (package! atomic-chrome)
 (package! yasnippet-snippets)
 (package! cape)
+(package! org-roam)
 (package! org-bullets)
 (package! embark)
 (package! marginalia)
+(package! ox-hugo)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
