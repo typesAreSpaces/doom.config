@@ -35,15 +35,19 @@
 (setq org-ellipsis "⇓")
 (setq org-hierarchical-todo-statistics nil)
 (setq org-directory "~/org/")
-(setq org-agenda-files
+(setq
+     org-agenda-files
+     (mapcar
+      #'(lambda (x) (concat "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/" x))
       '(
-        "~/Documents/GithubProjects/phd-thesis/Documents/Misc/20231115200616-qm_seminar.org"
-        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/research_tasks.org"
-        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/school_tasks.org"
-        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/graduation_logistics.org"
-        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/dissertation_tasks.org"
-        "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/main.org"
-        ))
+        "20231115200616-qm_seminar.org"
+        "research_tasks.org"
+        "school_tasks.org"
+        "graduation_logistics.org"
+        "dissertation_tasks.org"
+        "main.org"
+        "todo.org"
+        )))
 (setq org-file-apps
       '((auto-mode . emacs)
         (directory . emacs)
@@ -139,14 +143,6 @@
 (setq scc-reports-dir (concat scc-dir "/Reports"))
 
 ;; Custom keybindings
-
-(defun haha ()
-  (interactive)
-  (message "haha"))
-
-(map! :leader
-      :desc "Something"
-      "z" #'haha)
 
 (map! :leader
       :prefix "s"
