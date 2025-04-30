@@ -382,23 +382,23 @@
         '(("github\\.com" . poly-markdown+r-mode)
           ("overleaf\\.com" . latex-mode))))
 
-(defhydra hydra-jump-files (:exit t)
-  "jump to files"
-  ("a" (find-file
-        (expand-file-name (concat phd-thesis-org-files-dir "/main.org")))
-   "Agenda")
-  ("e" (find-file
-        (expand-file-name "config.el" doom-user-dir))
-   "Doom Emacs config")
-  ("rp" (find-file
-         (expand-file-name (concat phd-thesis-write-ups-dir "/references.bib")))
-   "Bibtex references - PhD thesis")
-  ("rs" (find-file
-         (expand-file-name (concat scc-reports-dir "/references.bib")))
-   "Bibtex references - SCC project"))
+;(defhydra hydra-jump-files (:exit t)
+;  "jump to files"
+;  ("a" (find-file
+;        (expand-file-name (concat phd-thesis-org-files-dir "/main.org")))
+;   "Agenda")
+;  ("e" (find-file
+;        (expand-file-name "config.el" doom-user-dir))
+;   "Doom Emacs config")
+;  ("rp" (find-file
+;         (expand-file-name (concat phd-thesis-write-ups-dir "/references.bib")))
+;   "Bibtex references - PhD thesis")
+;  ("rs" (find-file
+;         (expand-file-name (concat scc-reports-dir "/references.bib")))
+;   "Bibtex references - SCC project"))
 
-(map! :leader
-      "C-f" #'hydra-jump-files/body)
+;(map! :leader
+;      "C-f" #'hydra-jump-files/body)
 
 (use-package! cape
                                         ; Bind dedicated completion commands
