@@ -7,7 +7,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Jose Abel Castellanos Joo"
-      user-mail-address "jabelcastellanosjoo@unm.edu")
+      user-mail-address "jcastellanos34@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -36,30 +36,33 @@
 (setq org-hierarchical-todo-statistics nil)
 (setq org-directory "~/org/")
 (setq
-     org-agenda-files
-     (mapcar
-      #'(lambda (x) (concat "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/" x))
-      '(
-        "20231115200616-qm_seminar.org"
-        "research_tasks.org"
-        "school_tasks.org"
-        "graduation_logistics.org"
-        "dissertation_tasks.org"
-        "main.org"
-        "todo.org"
-        )))
+ org-agenda-files
+ (mapcar
+  #'(lambda (x) (concat "~/Documents/Org-Files/" x))
+  '(
+    "20260423173343-main_agenda.org"
+    "20260423174506-current_work.org"
+    "20251105153112-applying_opt.org"
+    "20260626124850-pavithra_prabhakar_postdoc_discussion.org"
+    "20260721081408-quantum_research.org"
+    "20231115200616-qm_seminar.org"
+    "20260423174626-algebraic_combinatorics_seminar.org"
+    "20260428165951-saturated_quadratic_module.org"
+    "20260428165645-monogenic_quadratic_module_certificates.org"
+    "20260511204944-general_case_univariate_quadratic_modules.org"
+    )))
 (setq org-file-apps
       '((auto-mode . emacs)
         (directory . emacs)
         ("\\.mm\\'" . default)
         ("\\.x?html?\\'" . default)
         ("\\.pdf\\'" . "sioyek %s")
-        ("\\.nb?\\'" . "Mathematica %s")))
+        ("\\.nb?\\'" . "open -a Mathematica %s")))
 (after! org
   (setq org-todo-keywords
         '((sequence "EXTERNAL" "|")
-          (sequence "GOAL" "IDEA" "OBSERVATION" "|" "OK")
-          (sequence "TODAY" "TODO" "LATER" "|" "MOVED" "COMPLETED(c)" "CANC(k@)")
+          (sequence "GOAL" "|" "OK" "IDEA" "OBSERVATION")
+          (sequence "TODO" "|" "MOVED" "DONE(c)" "CANC(k@)")
           (sequence "EMAIL" "|"))))
                                         ;(setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
 (defun org-sort-buffer ()
@@ -124,23 +127,6 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (setq-default line-spacing 2)
-
-;; Path definitions
-
-(setq phd-thesis-dir "~/Documents/GithubProjects/phd-thesis")
-(setq phd-thesis-org-files-dir
-      (concat phd-thesis-dir
-              "/Documents/Org-Files"))
-(setq phd-thesis-write-ups-dir
-      (concat phd-thesis-dir
-              "/Documents/Write-Ups"))
-(setq maxdiff-write-ups-dir
-      (concat phd-thesis-dir
-              "/Documents/Side-Projects/MaxDiff/Documents/notes"))
-(setq scc-dir
-      (concat phd-thesis-dir
-              "/Documents/Side-Projects/kapur-nsf-proposal/2022"))
-(setq scc-reports-dir (concat scc-dir "/Reports"))
 
 ;; Custom keybindings
 
@@ -233,9 +219,7 @@
 
 (use-package! citar
   :custom
-  (citar-bibliography `(,(concat scc-reports-dir "/references.bib")
-                        ,(concat maxdiff-write-ups-dir "/references.bib")
-                        ,(concat phd-thesis-write-ups-dir "/references.bib"))))
+  (citar-bibliography '("~/Documents/My-Library/references.bib")))
 
 (map! "C-c b" #'citar-insert-citation)
 
@@ -382,23 +366,23 @@
         '(("github\\.com" . poly-markdown+r-mode)
           ("overleaf\\.com" . latex-mode))))
 
-;(defhydra hydra-jump-files (:exit t)
-;  "jump to files"
-;  ("a" (find-file
-;        (expand-file-name (concat phd-thesis-org-files-dir "/main.org")))
-;   "Agenda")
-;  ("e" (find-file
-;        (expand-file-name "config.el" doom-user-dir))
-;   "Doom Emacs config")
-;  ("rp" (find-file
-;         (expand-file-name (concat phd-thesis-write-ups-dir "/references.bib")))
-;   "Bibtex references - PhD thesis")
-;  ("rs" (find-file
-;         (expand-file-name (concat scc-reports-dir "/references.bib")))
-;   "Bibtex references - SCC project"))
+                                        ;(defhydra hydra-jump-files (:exit t)
+                                        ;  "jump to files"
+                                        ;  ("a" (find-file
+                                        ;        (expand-file-name (concat phd-thesis-org-files-dir "/main.org")))
+                                        ;   "Agenda")
+                                        ;  ("e" (find-file
+                                        ;        (expand-file-name "config.el" doom-user-dir))
+                                        ;   "Doom Emacs config")
+                                        ;  ("rp" (find-file
+                                        ;         (expand-file-name (concat phd-thesis-write-ups-dir "/references.bib")))
+                                        ;   "Bibtex references - PhD thesis")
+                                        ;  ("rs" (find-file
+                                        ;         (expand-file-name (concat scc-reports-dir "/references.bib")))
+                                        ;   "Bibtex references - SCC project"))
 
-;(map! :leader
-;      "C-f" #'hydra-jump-files/body)
+                                        ;(map! :leader
+                                        ;      "C-f" #'hydra-jump-files/body)
 
 (use-package! cape
                                         ; Bind dedicated completion commands
@@ -529,13 +513,6 @@
          ("C-<return>" . vertico-exit-input))
   :config
   (org-roam-setup))
-
-(use-package! ox-hugo
-  :ensure t
-  :after ox)
-
-(setq website-dir "~/Documents/GithubProjects/website")
-(setq website-posts (concat website-dir "/content-org/all-posts.org"))
 
 (with-eval-after-load 'org-capture
   (defun org-hugo-new-subtree-post-capture-template ()
