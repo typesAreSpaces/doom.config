@@ -59,11 +59,11 @@
         ("\\.pdf\\'" . "sioyek %s")
         ("\\.nb?\\'" . "open -a Mathematica %s")))
 (after! org
-  (setq org-todo-keywords
-        '((sequence "EXTERNAL" "|")
-          (sequence "GOAL" "|" "OK" "IDEA" "OBSERVATION")
-          (sequence "TODO" "|" "MOVED" "DONE(c)" "CANC(k@)")
-          (sequence "EMAIL" "|"))))
+	(setq org-todo-keywords
+              '((sequence "EXTERNAL" "|")
+		(sequence "GOAL" "|" "OK" "IDEA" "OBSERVATION")
+		(sequence "TODO" "|" "MOVED" "DONE(c)" "CANC(k@)")
+		(sequence "EMAIL" "|"))))
                                         ;(setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
 (defun org-sort-buffer ()
   "Sort all entries in the current buffer, recursively."
@@ -194,20 +194,20 @@
 ;; Package configuration
 
 (use-package! zoom
-  :config
-  (setq zoom-size '(0.618 . 0.618)))
+	      :config
+	      (setq zoom-size '(0.618 . 0.618)))
 
 (use-package! olivetti
-  :custom
-  (olivetti-body-width 130))
+	      :custom
+	      (olivetti-body-width 130))
 
 (use-package! yasnippet
-  :config
-  (setq yas-snippet-dirs `(,(expand-file-name "snippets" doom-user-dir)))
-  (setq yas-key-syntaxes '(yas-longest-key-from-whitespace "w_.()" "w_." "w_" "w"))
-  (define-key yas-minor-mode-map (kbd "C-g") 'evil-normal-state)
-  (define-key yas-keymap (kbd "C-g") 'evil-normal-state)
-  (yas-global-mode 1))
+	      :config
+	      (setq yas-snippet-dirs `(,(expand-file-name "snippets" doom-user-dir)))
+	      (setq yas-key-syntaxes '(yas-longest-key-from-whitespace "w_.()" "w_." "w_" "w"))
+	      (define-key yas-minor-mode-map (kbd "C-g") 'evil-normal-state)
+	      (define-key yas-keymap (kbd "C-g") 'evil-normal-state)
+	      (yas-global-mode 1))
 
 (use-package! yasnippet-snippets)
 
@@ -218,8 +218,8 @@
   (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets))
 
 (use-package! citar
-  :custom
-  (citar-bibliography '("~/Documents/My-Library/references.bib")))
+	      :custom
+	      (citar-bibliography '("~/Documents/My-Library/references.bib")))
 
 (map! "C-c b" #'citar-insert-citation)
 
@@ -268,18 +268,18 @@
   (lsp-headerline-breadcrumb-mode))
 
 (use-package! lsp-mode
-  :commands (lsp lsp-deferred)
-  ;;:hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-l")
-  :config
-  ;;(setq lsp-completion-provider :company)
-  (setq lsp-completion-provider :none)
-  (defun corfu-lsp-setup ()
-    (setq-local completion-styles '(orderless)
-                completion-category-defaults nil))
-  (add-hook 'lsp-mode-hook #'corfu-lsp-setup)
-  (lsp-enable-which-key-integration t))
+	      :commands (lsp lsp-deferred)
+	      ;;:hook (lsp-mode . efs/lsp-mode-setup)
+	      :init
+	      (setq lsp-keymap-prefix "C-l")
+	      :config
+	      ;;(setq lsp-completion-provider :company)
+	      (setq lsp-completion-provider :none)
+	      (defun corfu-lsp-setup ()
+		(setq-local completion-styles '(orderless)
+			    completion-category-defaults nil))
+	      (add-hook 'lsp-mode-hook #'corfu-lsp-setup)
+	      (lsp-enable-which-key-integration t))
 
 (add-hook 'TeX-mode-hook 'outline-minor-mode)
 (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
@@ -294,26 +294,26 @@
 (add-hook 'LaTeX-mode-hook #'display-fill-column-indicator-mode)
 
 (use-package! lsp-latex
-  :config
-  (setq lsp-latex-build-executable "latexmk")
-  (setq lsp-latex-build-args
-        '("-pvc" "-pdf" "-interaction=nonstopmode" "-synctex=1" "-cd" "%f"))
-  (setq lsp-latex-forward-search-after t)
-  (setq lsp-latex-build-on-save t)
-  ;; Configuration for sioyek
-  ;; (setq lsp-latex-forward-search-executable "/opt/homebrew/bin/sioyek")
-  ;; (setq lsp-latex-forward-search-args
-  ;;       '(
-  ;;         "--forward-search-file"
-  ;;         "%f"
-  ;;         "--forward-search-line"
-  ;;         "%l"
-  ;;         "%p"))
-  ;; Configuration for Skim
-  (setq lsp-latex-forward-search-executable
-        "/Applications/Skim.app/Contents/SharedSupport/displayline")
-  (setq lsp-latex-forward-search-args '("%l" "%p" "%f"))
-  )
+	      :config
+	      (setq lsp-latex-build-executable "latexmk")
+	      (setq lsp-latex-build-args
+		    '("-pvc" "-pdf" "-interaction=nonstopmode" "-synctex=1" "-cd" "%f"))
+	      (setq lsp-latex-forward-search-after t)
+	      (setq lsp-latex-build-on-save t)
+	      ;; Configuration for sioyek
+	      ;; (setq lsp-latex-forward-search-executable "/opt/homebrew/bin/sioyek")
+	      ;; (setq lsp-latex-forward-search-args
+	      ;;       '(
+	      ;;         "--forward-search-file"
+	      ;;         "%f"
+	      ;;         "--forward-search-line"
+	      ;;         "%l"
+	      ;;         "%p"))
+	      ;; Configuration for Skim
+	      (setq lsp-latex-forward-search-executable
+		    "/Applications/Skim.app/Contents/SharedSupport/displayline")
+	      (setq lsp-latex-forward-search-args '("%l" "%p" "%f"))
+	      )
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -359,30 +359,12 @@
   (bibtex-fill-entry))
 
 (use-package! atomic-chrome
-  :config
-  (atomic-chrome-start-server)
-  (setq atomic-chrome-buffer-open-style 'full)
-  (setq atomic-chrome-url-major-mode-alist
-        '(("github\\.com" . poly-markdown+r-mode)
-          ("overleaf\\.com" . latex-mode))))
-
-                                        ;(defhydra hydra-jump-files (:exit t)
-                                        ;  "jump to files"
-                                        ;  ("a" (find-file
-                                        ;        (expand-file-name (concat phd-thesis-org-files-dir "/main.org")))
-                                        ;   "Agenda")
-                                        ;  ("e" (find-file
-                                        ;        (expand-file-name "config.el" doom-user-dir))
-                                        ;   "Doom Emacs config")
-                                        ;  ("rp" (find-file
-                                        ;         (expand-file-name (concat phd-thesis-write-ups-dir "/references.bib")))
-                                        ;   "Bibtex references - PhD thesis")
-                                        ;  ("rs" (find-file
-                                        ;         (expand-file-name (concat scc-reports-dir "/references.bib")))
-                                        ;   "Bibtex references - SCC project"))
-
-                                        ;(map! :leader
-                                        ;      "C-f" #'hydra-jump-files/body)
+	      :config
+	      (atomic-chrome-start-server)
+	      (setq atomic-chrome-buffer-open-style 'full)
+	      (setq atomic-chrome-url-major-mode-alist
+		    '(("github\\.com" . poly-markdown+r-mode)
+		      ("overleaf\\.com" . latex-mode))))
 
 (use-package! cape
                                         ; Bind dedicated completion commands
@@ -405,7 +387,7 @@
                                         ;       ("C-c p ^" . cape-tex)
                                         ;       ("C-c p &" . cape-sgml)
                                         ;       ("C-c p r" . cape-rfc1345))
-  :init
+	      :init
                                         ; Add to the global default value of
                                         ; `completion-at-point-functions' which is
                                         ; used by `completion-at-point'.  The order of the functions
@@ -413,8 +395,8 @@
                                         ; first function returning a result wins.  Note that the list
                                         ; of buffer-local
                                         ; completion functions takes precedence over the global list.
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
+	      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+	      (add-to-list 'completion-at-point-functions #'cape-file)
                                         ; (add-to-list 'completion-at-point-functions
                                         ; #'cape-elisp-block)
                                         ; (add-to-list 'completion-at-point-functions #'cape-history)
@@ -427,11 +409,11 @@
                                         ; (add-to-list 'completion-at-point-functions
                                         ; #'cape-elisp-symbol)
                                         ; (add-to-list 'completion-at-point-functions #'cape-line))
-  )
+	      )
 
 (use-package! org-bullets
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+	      :custom
+	      (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (defun efs/org-font-setup ()
@@ -468,16 +450,16 @@
 (efs/org-font-setup)
 
 (use-package! embark
-  :bind
-  :init
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-  ;; Hide the mode line of the Embark live/completions buffers
-  (require 'embark)
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+	      :bind
+	      :init
+	      ;; Optionally replace the key help with a completing-read interface
+	      (setq prefix-help-command #'embark-prefix-help-command)
+	      ;; Hide the mode line of the Embark live/completions buffers
+	      (require 'embark)
+	      (add-to-list 'display-buffer-alist
+			   '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+			     nil
+			     (window-parameters (mode-line-format . none)))))
 
 (global-set-key (kbd "C-c C-.") 'embark-act)
 
@@ -488,31 +470,31 @@
          (call-interactively #'find-file-other-tab)))
 
 (use-package! org-roam
-  :init
-  (setq org-roam-v2-ack t)
-  :custom
-  (org-roam-directory "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files")
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
-   '(("d" "default" plain
-      "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
-      :unnarrowed t)
-     ("l" "lecture" plain
-      (file "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/Templates/lecture.org")
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %U\n")
-      :unnarrowed t)
-     ("m" "meeting" plain
-      (file "~/Documents/GithubProjects/phd-thesis/Documents/Org-Files/Templates/meeting.org")
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %U\n")
-      :unnarrowed t)))
-  :bind (("C-x n f" . org-roam-node-find)
-         ("C-x n i" . org-roam-node-insert)
-         :map org-mode-map
-         ("C-M-i" . completion-at-point)
-         ("C-<return>" . vertico-exit-input))
-  :config
-  (org-roam-setup))
+	      :init
+	      (setq org-roam-v2-ack t)
+	      :custom
+	      (org-roam-directory "~/Documents/Org-Files")
+	      (org-roam-completion-everywhere t)
+	      (org-roam-capture-templates
+	       '(("d" "default" plain
+		  "%?"
+		  :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
+		  :unnarrowed t)
+		 ("l" "lecture" plain
+		  (file "~/Documents/Org-Files/Templates/lecture.org")
+		  :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %U\n")
+		  :unnarrowed t)
+		 ("m" "meeting" plain
+		  (file "~/Documents/Org-Files/Templates/meeting.org")
+		  :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %U\n")
+		  :unnarrowed t)))
+	      :bind (("C-x n f" . org-roam-node-find)
+		     ("C-x n i" . org-roam-node-insert)
+		     :map org-mode-map
+		     ("C-M-i" . completion-at-point)
+		     ("C-<return>" . vertico-exit-input))
+	      :config
+	      (org-roam-setup))
 
 (with-eval-after-load 'org-capture
   (defun org-hugo-new-subtree-post-capture-template ()
